@@ -53,4 +53,12 @@ class UserController extends Controller
         }
     }
 
+    public function logout(){
+        auth()->user()->tokens()->delete();
+        return response([
+            'message'=>'Logged Out Success.',
+            'status'=>'success'
+        ],200);
+    }
+
 }
