@@ -35,5 +35,22 @@ class UserController extends Controller
             'status' => 'Success'
         ],201);
     }
+    
+    public function login(Request $request){
+        $request->validate([
+            'email'=> 'required|email',
+            'password'=> 'required|confirmed',
+        ]);
+        $user = User::where('email',$request->email)->first();
+
+        if($user && Hash::check($request->password,$user->password)){
+            $token = $user->createToken($request->email)->plainTextToken;
+            return response([
+                'token'=>$token,
+                'message'=>'Logged In Success.',
+                'status'=>'success.',
+            ],200);
+        }
+    }
 
 }
