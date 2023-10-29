@@ -51,6 +51,10 @@ class UserController extends Controller
                 'status'=>'success.',
             ],200);
         }
+        return response([
+            'message'=>'Credentials incorrect.',
+            'status'=>'success.',
+        ],200);
     }
 
     public function logout(){
@@ -68,5 +72,29 @@ class UserController extends Controller
             'message'=>'User details.',
             'status'=>'success'
         ],200);
+    }
+
+    public function change_password_with_old(Request $request){
+        $request->validate([
+            'old_password' => 'required',
+            'password'=> 'required|confirmed'
+        ]);
+        $logged_user = auth()->user();
+        if(Hash::check($request->old_password,$logged_user->password)){
+
+            $logged_user->password = Hash::make($request->password);
+            $logged_user->save();
+    
+            return response([
+                'message'=>'Password Changed.',
+                'status' => 'success'
+            ]);
+        }
+        return response([
+            'message'=>'Old password dosen\'t match.',
+            'status' => 'success'
+        ]);
+        
+        
     }
 }
