@@ -10,6 +10,7 @@ Route::get('/login',[UserController::class,'login']);
 
 Route::middleware('auth:sanctum')->group(function(){
     Route::get('/logout',[UserController::class,'logout']);
+    Route::get('/logged_user',[UserController::class,'logged_user']);
 });
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
